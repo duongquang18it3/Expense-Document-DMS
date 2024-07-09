@@ -57,7 +57,6 @@ with col2:
 # Subcategory options
 subcategory_options = {
     "Expenses": [
-        "Please select Expense categories",
         "Food and Groceries", "Healthcare", "Insurance", "Marketing and Advertising", 
         "Meals and Entertainment", "Mortgage", "Office Supplies & Expenses", "Other expenses", 
         "Professional Services", "Rent", "Salaries and Wages", "Subscriptions", "Taxes", 
@@ -65,20 +64,17 @@ subcategory_options = {
         "Vehicles and Gas","Other"
     ],
     "Income": [
-        "Please select Income categories",
         "Affiliate Marketing", "Business Sales", "Freelance Income", "Gifts and Donations", 
         "Investments", "Online Sales", "Other income", "Rental Income", "Royalties", 
         "Salary or Wages", "Other"
     ],
     "Bank statements": [
-        "Please select Bank statement categories",
         "Annual Reports", "Balance Sheets", "Bank statements", "Business Licenses", 
         "Cash Flow Statements", "Contracts", "Employee Contracts", "Income Statements", 
         "Inventory Lists", "Lease Agreements", "Meeting Minutes", "Other documents", 
         "Purchase Orders", "Tax Statements", "Other"
     ],
     "Documents": [
-        "Please select Document categories",
         "Annual Reports", "Balance Sheets", "Bank statements", "Business Licenses", 
         "Cash Flow Statements", "Contracts", "Employee Contracts", "Income Statements", 
         "Inventory Lists", "Lease Agreements", "Meeting Minutes", "Other documents", 
