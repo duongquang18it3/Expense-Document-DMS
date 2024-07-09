@@ -7,6 +7,17 @@ import json
 
 st.set_page_config(layout="wide", page_title="")
 
+# Custom CSS to hide Streamlit elements
+st.markdown("""
+    <style>
+        /* Hide Streamlit header, footer, and burger menu */
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+        .css-1rs6os.edgvbvh3 {visibility: hidden;} /* This targets the "Fork me on GitHub" ribbon */
+        .css-15tx938.egzxvld1 {visibility: hidden;} /* This targets the GitHub icon in the menu */
+    </style>
+""", unsafe_allow_html=True)
+
 # API authentication
 auth = HTTPBasicAuth('admin', '1234@BCD')
 
@@ -24,20 +35,29 @@ def fetch_documents(url):
 api_url = "http://edms-demo.epik.live/api/v4/documents/"
 documents = fetch_documents(api_url)
 
-# Create a placeholder for the uploaded image
-uploaded_image = None
-
 # Create the two-column layout
-col1, col2 = st.columns([4, 6])
+col2, col1 = st.columns([6, 4])
 
 # Extract document labels and image URLs
-document_labels = [doc['label'] for doc in documents]
+document_labels = ["Please select document"] + [doc['label'] for doc in documents]  # Add an empty option at the beginning
 image_urls = {doc['label']: doc['file_latest']['pages_first']['image_url'] for doc in documents}
+
+# Display document image if a document is selected from dropdown
+with col2:
+    document_label = st.selectbox("Select Document", options=document_labels, index=0)
+    if document_label and document_label in image_urls:
+        image_url = image_urls[document_label]
+        response = requests.get(image_url, auth=auth)
+        if response.status_code == 200:
+            img = Image.open(BytesIO(response.content))
+            st.image(img, use_column_width="always")
+        else:
+            st.error("Unable to load image from URL.")
 
 # Subcategory options
 subcategory_options = {
     "Expenses": [
-        
+        "Please select Expense categories",
         "Food and Groceries", "Healthcare", "Insurance", "Marketing and Advertising", 
         "Meals and Entertainment", "Mortgage", "Office Supplies & Expenses", "Other expenses", 
         "Professional Services", "Rent", "Salaries and Wages", "Subscriptions", "Taxes", 
@@ -45,20 +65,20 @@ subcategory_options = {
         "Vehicles and Gas","Other"
     ],
     "Income": [
-        
+        "Please select Income categories",
         "Affiliate Marketing", "Business Sales", "Freelance Income", "Gifts and Donations", 
         "Investments", "Online Sales", "Other income", "Rental Income", "Royalties", 
         "Salary or Wages", "Other"
     ],
     "Bank statements": [
-        
+        "Please select Bank statement categories",
         "Annual Reports", "Balance Sheets", "Bank statements", "Business Licenses", 
         "Cash Flow Statements", "Contracts", "Employee Contracts", "Income Statements", 
         "Inventory Lists", "Lease Agreements", "Meeting Minutes", "Other documents", 
         "Purchase Orders", "Tax Statements", "Other"
     ],
     "Documents": [
-       
+        "Please select Document categories",
         "Annual Reports", "Balance Sheets", "Bank statements", "Business Licenses", 
         "Cash Flow Statements", "Contracts", "Employee Contracts", "Income Statements", 
         "Inventory Lists", "Lease Agreements", "Meeting Minutes", "Other documents", 
@@ -66,7 +86,6 @@ subcategory_options = {
     ]
 }
 
-# Subcategory options
 currency_options = [
     "SGD - Singapore dollar",
     "AFN - Afghan afghani",
@@ -244,7 +263,6 @@ load_stored_data()
 
 # Create the form in the left column
 with col1:
-    document_label = st.selectbox("Select Document", options=document_labels)
     merchant = st.text_input(label="Merchant", value="")
     date = st.date_input(label="Date", format="DD/MM/YYYY")
     document_category = st.selectbox(
@@ -310,21 +328,3 @@ with col1:
         st.download_button("Download JSON", json_data, "expense_report.json", "application/json")
         
         st.success("Expense report submitted successfully!")
-
-# Create the image upload section in the right column
-with col2:
-    image_file = st.file_uploader("Upload Invoice or Receipt", type=["jpg", "jpeg", "png"])
-
-    if image_file is not None:
-        uploaded_image = Image.open(image_file)
-        st.image(uploaded_image, use_column_width="always")
-    else:
-        # Show document image if a document is selected from dropdown
-        if document_label in image_urls:
-            image_url = image_urls[document_label]
-            response = requests.get(image_url, auth=auth)
-            if response.status_code == 200:
-                img = Image.open(BytesIO(response.content))
-                st.image(img, use_column_width="always")
-            else:
-                st.error("Unable to load image from URL.")
