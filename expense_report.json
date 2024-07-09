@@ -1,0 +1,17 @@
+{
+    "Merchant": "",
+    "Date": "2024-07-09",
+    "Document Category": "Expenses",
+    "Subcategory": "Please select Expense categories",
+    "Payment Method": "Cash",
+    "Account Number": "",
+    "Reference": "",
+    "Tax Calculation": "Tax Included",
+    "Total Amount": 0.0,
+    "Tax Amount": 0.0,
+    "Currency": "SGD - Singapore dollar",
+    "Detail": "",
+    "Document Tags": "",
+    "Document Label": "OCBC_1.pdf",
+    "Image URL": "http://edms-demo.epik.live/api/v4/documents/518/files/501/pages/1563/image/"
+}
